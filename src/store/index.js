@@ -40,5 +40,14 @@ export default new Vuex.Store({
                 removeItem: key => Cookies.remove(key)
             }
         }),
+        createPersistedState({
+            key: '_we_d_e_v_u',
+            paths: ['authentication.user'],
+            storage: {
+                getItem: key => Cookies.get(key),
+                setItem: (key, value) => Cookies.set(key, value, { expires: 3 }),
+                removeItem: key => Cookies.remove(key)
+            }
+        }),
     ]
 })

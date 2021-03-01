@@ -5,9 +5,10 @@
 import Cookies from 'js-cookie'
 import HTTP from '../__helpers/http'
 import router from '../router'
+
 export default {
     namespaced: true,
-    strict: process.env.NODE_ENV !== 'production',
+    // strict: process.env.NODE_ENV !== 'production',
     state: {
         loginInfo: {
             email: 'admin@mail.com',
@@ -15,7 +16,6 @@ export default {
         },
         token: '',
         user: [],
-
     },
     getters: {
         validToLogin(state) {
@@ -33,9 +33,9 @@ export default {
             state.loginInfo.password = event
         },
         /** User Token Set */
-        SET_TOKEN(state, client) {
-            state.token = client.token
-            Cookies.set('_we_d_e_v', client.token, {
+        SET_TOKEN(state, token) {
+            state.token = token
+            Cookies.set('_we_d_e_v', token, {
                 expires: 7
                 // httpOnly: true
             })
@@ -47,6 +47,10 @@ export default {
         /** Set User */
         SET_USER(state, user) {
             state.user = user;
+            Cookies.set('_we_d_e_v_u', user, {
+                expires: 7
+                // httpOnly: true
+            })
         }
     },
     actions: {
@@ -72,30 +76,11 @@ export default {
                 console.log(loginError)
             }
         },
-
-        // getLoggedInUser({ commit, state }){
-        //     try {
-        //         return HTTP()
-        //             .get(getUser)
-        //             .then(response => {
-        //                 console.log(response)
-        //                 commit('SET_CLIENT', response.data)
-        //                 commit('SET_ROLE', response.data.roles[0].pretty_name)
-        //                 // return router.push('/')
-        //             })
-        //             .catch(error => {
-        //                 console.log(error)
-        //             })
-        //     } catch (loginError) {
-        //         console.log(loginError)
-        //     }
-        // },
-
         /**
          * Logout for User
          * @param null
          */
-        logout({ commit, state }) {
+        logout({commit, state}) {
             try {
                 commit('REMOVE_TOKEN', state)
                 router.push('/')

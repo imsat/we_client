@@ -16,7 +16,12 @@ export default new Router({
             path: '/',
             alias: '/login',
             component: Login,
-            name: 'login'
+            name: 'login',
+            meta: {
+                description: 'Login panel',
+                requiresAuth: false,
+
+            }
         },
         /** Product */
         {

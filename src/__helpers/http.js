@@ -3,7 +3,7 @@
  */
 import axios from 'axios'
 import store from '../store'
-import router from '../router'
+// import router from '../router'
 
 export default () => {
     const instance = axios.create({
@@ -30,13 +30,13 @@ export default () => {
         },
         function (error) {
 
-            const originalRequest = error.config
+            // const originalRequest = error.config
 
-            if (error.response.status === 401 && !originalRequest._retry) {
-                originalRequest._retry = true
-                store.commit('authentication/REMOVE_TOKEN')
-                router.push('/')
-            }
+            // if (error.response.status === 401 && !originalRequest._retry) {
+            //     originalRequest._retry = true
+            //     store.commit('authentication/REMOVE_TOKEN')
+            //     router.push('/')
+            // }
 
             /** Global loader */
             store.commit('__helpers/SET_IS_LOADING', true, {root: true})
@@ -49,3 +49,46 @@ export default () => {
     /** End of Interceptors */
     return instance
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// /**
+//  * Module to handle AXIOS Requests
+//  */
+// import axios from 'axios'
+//
+// export default () => {
+// const instance = axios.create({
+//     // baseURL: 'http://we_server.test/api/',
+//     baseURL: '/api',
+//     timeout: 1000,
+//     headers: {'X-Custom-Header': 'foobar'}
+// });
+//
+// return instance
+//
+// }

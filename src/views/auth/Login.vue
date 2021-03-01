@@ -31,8 +31,8 @@
                       lazy-validation
                       ref="loginForm">
 
-<!--                    :error-messages="errors.email ? [errors.email[0]] : ''"-->
-<!--                    :rules="validationRules.textRules"-->
+                    <!--                    :error-messages="errors.email ? [errors.email[0]] : ''"-->
+                    <!--                    :rules="validationRules.textRules"-->
                     <v-text-field
                         label="Email"
                         :value="loginInfo.email"
@@ -41,8 +41,8 @@
                         type="text"
                     ></v-text-field>
 
-<!--                    :error-messages="errors.password ? [errors.password[0]] : ''"-->
-<!--                    :rules="validationRules.textRules"-->
+                    <!--                    :error-messages="errors.password ? [errors.password[0]] : ''"-->
+                    <!--                    :rules="validationRules.textRules"-->
                     <v-text-field
                         label="Password"
                         :value="loginInfo.password"
@@ -55,6 +55,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn @click="login" color="cyan" dark>Login</v-btn>
+                  <!--                  <v-btn @click="loginTest" color="cyan" dark>Login</v-btn>-->
                 </v-card-actions>
 
               </v-card>
@@ -68,12 +69,21 @@
 
 <script>
 import {mapState, mapMutations, mapActions} from 'vuex'
+// import axios from 'axios'
 
 export default {
   name: "Login",
-  data() {
+  data: () => {
     return {
       valid: true,
+    }
+  },
+  beforeMount() {
+    let _this = this
+
+    // Temporary redirect if login
+    if (_this.token) {
+      _this.$router.push('/products')
     }
   },
   computed: {
@@ -82,7 +92,10 @@ export default {
       'isLoading',
       'commonErrors'
     ]),
-    ...mapState('authentication', ['loginInfo']),
+    ...mapState('authentication', [
+      'loginInfo',
+      'token'
+    ]),
   },
   methods: {
     ...mapMutations('authentication', [
