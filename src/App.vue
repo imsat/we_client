@@ -2,7 +2,12 @@
   <v-app>
     <app-bar/>
     <v-main>
-      <router-view></router-view>
+      <!-- Provides the application the proper gutter -->
+      <v-container >
+
+        <!-- vue-router -->
+        <router-view></router-view>
+      </v-container>
     </v-main>
   </v-app>
 </template>

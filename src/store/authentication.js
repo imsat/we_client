@@ -8,7 +8,7 @@ import router from '../router'
 
 export default {
     namespaced: true,
-    // strict: process.env.NODE_ENV !== 'production',
+    strict: process.env.NODE_ENV !== 'production',
     state: {
         loginInfo: {
             email: 'admin@mail.com',
@@ -44,6 +44,7 @@ export default {
         REMOVE_TOKEN(state) {
             state.token = null
         },
+
         /** Set User */
         SET_USER(state, user) {
             state.user = user;
@@ -51,7 +52,11 @@ export default {
                 expires: 7
                 // httpOnly: true
             })
-        }
+        },
+        /** Remove user */
+        REMOVE_USER(state) {
+            state.user = null
+        },
     },
     actions: {
         /**
@@ -80,9 +85,10 @@ export default {
          * Logout for User
          * @param null
          */
-        logout({commit, state}) {
+        logout({commit}) {
             try {
-                commit('REMOVE_TOKEN', state)
+                commit('REMOVE_TOKEN')
+                commit('REMOVE_USER')
                 router.push('/')
             } catch (logoutError) {
                 console.log(logoutError)

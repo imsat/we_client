@@ -5,14 +5,14 @@
       dark
   >
     <div class="d-flex align-center">
-      <h2>WE RYZEN</h2>
+      <h2 class="display-1">WE RYZEN</h2>
     </div>
 
     <v-spacer></v-spacer>
 
     <span class="mr-2" v-if="user">{{ user.name }}</span>
 
-    <v-tooltip bottom>
+    <v-tooltip bottom v-if="user">
       <template v-slot:activator="{ on }">
         <v-btn
             icon

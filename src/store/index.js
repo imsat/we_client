@@ -36,7 +36,7 @@ export default new Vuex.Store({
             paths: ['authentication.token'],
             storage: {
                 getItem: key => Cookies.get(key),
-                setItem: (key, value) => Cookies.set(key, value, { expires: 3 }),
+                setItem: (key, value) => Cookies.set(key, value, { expires: 7 }),
                 removeItem: key => Cookies.remove(key)
             }
         }),
@@ -45,7 +45,7 @@ export default new Vuex.Store({
             paths: ['authentication.user'],
             storage: {
                 getItem: key => Cookies.get(key),
-                setItem: (key, value) => Cookies.set(key, value, { expires: 3 }),
+                setItem: (key, value) => Cookies.set(key, value, { expires: 7 }),
                 removeItem: key => Cookies.remove(key)
             }
         }),

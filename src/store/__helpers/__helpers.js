@@ -22,15 +22,6 @@ export default {
         SET_IS_LOADING(state) {
             state.isLoading = !state.isLoading;
         },
-        /** Set global drawer activator*/
-        SET_IS_ACTIVE_DRAWER(state, value) {
-            state.isActiveDrawer = value
-        },
-        /** Set global dialog activator*/
-        SET_IS_ACTIVE_DIALOG(state, value) {
-            state.isActiveDialog.dialog = value.dialog
-            state.isActiveDialog.activator = value.activator
-        },
         /** Set global modal activator*/
         SET_IS_ACTIVE(state, value) {
             state.isActive.modal = value.modal
