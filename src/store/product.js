@@ -124,7 +124,7 @@ export default {
          * Get All Products
          * @param loginInfo
          */
-        async getProducts({state, commit}, {event}) {
+        async getProducts({state, commit}, {event, search}) {
             try {
                 //Update pagination for server side
                 if (event) {
@@ -135,7 +135,8 @@ export default {
                     .get('/products', {
                         params: {
                             itemsPerPage: state.pagination.itemsPerPage,
-                            page: state.pagination.page
+                            page: state.pagination.page,
+                            ...(search ? {search: search.toLowerCase()} : {})
                         }
                     })
                     .then(response => {
@@ -150,15 +151,20 @@ export default {
                 console.log(loginError)
             }
         },
-
         /**
          * Add New Product
          * @param loginInfo
          */
-         addNewProduct({state, commit}) {
+        addNewProduct({state, commit}) {
             try {
+                const formData = new FormData();
+                formData.append('image_url', state.productCreateForm.image_url, state.productCreateForm.image_url.name)
+                formData.append('title', state.productCreateForm.title)
+                formData.append('description', state.productCreateForm.description)
+                formData.append('price', state.productCreateForm.price)
+
                 return HTTP()
-                    .post('/products', state.productCreateForm)
+                    .post('/products', formData)
                     .then(response => {
                         if (response.status == 201) {
                             toast.success('Product created successful');
@@ -177,19 +183,43 @@ export default {
          * Update Product
          * @param loginInfo
          */
-         updateProduct({state, commit}) {
+        updateProduct({state, commit}) {
             try {
-                return HTTP()
-                    .put('/products/' + state.productUpdateForm.id, state.productUpdateForm)
-                    .then(response => {
-                        if (response.status == 202) {
-                            toast.success('Product updated successful');
-                            commit('UPDATE_PRODUCT_AFTER_COMPLETE', response.data.data);
-                        }
-                    })
-                    .catch(error => {
-                        toast.error(error.response.data.error);
-                    });
+                //If update has any image url
+                if(state.productUpdateForm.image_url){
+                    const formData = new FormData();
+                    formData.append('image_url', state.productUpdateForm.image_url, state.productUpdateForm.image_url.name)
+                    formData.append('title', state.productUpdateForm.title)
+                    formData.append('description', state.productUpdateForm.description)
+                    formData.append('price', state.productUpdateForm.price)
+
+                    return HTTP()
+                        .post('/products/' + state.productUpdateForm.id, formData)
+                        .then(response => {
+                            if (response.status == 202) {
+                                toast.success('Product updated successful');
+                                commit('UPDATE_PRODUCT_AFTER_COMPLETE', response.data.data);
+                            }
+                        })
+                        .catch(error => {
+                            toast.error(error.response.data.error);
+                        });
+
+                }else{
+                    return HTTP()
+                        .post('/products/' + state.productUpdateForm.id, state.productUpdateForm)
+                        .then(response => {
+                            if (response.status == 202) {
+                                toast.success('Product updated successful');
+                                commit('UPDATE_PRODUCT_AFTER_COMPLETE', response.data.data);
+                            }
+                        })
+                        .catch(error => {
+                            toast.error(error.response.data.error);
+                        });
+                }
+
+
 
             } catch (error) {
                 console.log(error)

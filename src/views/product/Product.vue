@@ -5,6 +5,11 @@
       <v-card-title class="headline ">
         All Products
         <v-spacer></v-spacer>
+
+        <v-toolbar flat>
+          <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line></v-text-field>
+        </v-toolbar>
+
         <v-btn
             color="cyan"
             small
@@ -21,7 +26,7 @@
         <v-data-table
             :headers="headers"
             :items="products"
-            @pagination="getProducts({event: $event})"
+            @pagination="getProducts({event: $event, search: search})"
             :server-items-length="totalProducts"
             :loading="isLoading"
             class="elevation-1"
@@ -142,7 +147,8 @@
                   <v-form
                       v-model="valid"
                       lazy-validation
-                      ref="addNewProductForm">
+                      ref="addNewProductForm"
+                  >
 
                     <v-card-text>
 
@@ -163,14 +169,13 @@
                           :rules="validationRules.textRules"
                       ></v-text-field>
 
-                      <v-text-field
-                          type="text"
-                          label="Product image url"
-                          :value="productCreateForm.image_url"
-                          @input="SET_ADD_PRODUCT_IMAGE_URL"
+                      <v-file-input
+                          label="Product image"
+                          truncate-length="20"
+                          @change="SET_ADD_PRODUCT_IMAGE_URL"
                           required
-                          :rules="validationRules.textRules"
-                      ></v-text-field>
+                          :rules="validationRules.documentFileRules"
+                      ></v-file-input>
 
                       <v-text-field
                           label="Product description"
@@ -193,7 +198,7 @@
                       <v-btn
                           color="success"
                           small
-                          :disabled="(!productCreateForm.title && !productCreateForm.price && productCreateForm.image_url) || isLoading"
+                          :disabled="!productCreateForm.title && !productCreateForm.price  || isLoading"
                           @click="addProduct"
                       >
                         <v-icon small>mdi-plus</v-icon>
@@ -261,14 +266,14 @@
                           :rules="validationRules.textRules"
                       ></v-text-field>
 
-                      <v-text-field
-                          type="text"
-                          label="Product image url"
-                          :value="productUpdateForm.image_url"
-                          @input="SET_EDIT_PRODUCT_IMAGE_URL"
+                      <v-file-input
+                          label="Product image"
+                          truncate-length="20"
+                          @change="SET_EDIT_PRODUCT_IMAGE_URL"
                           required
-                          :rules="validationRules.textRules"
-                      ></v-text-field>
+                          :rules="validationRules.documentFileRules"
+                      ></v-file-input>
+
                       <v-img
                           class="d-inline-block"
                           :lazy-src="edit_image_url"
@@ -313,7 +318,6 @@
           </v-container>
         </v-navigation-drawer>
         <!-- End of update Drawer -->
-
 
         <!-- Right Overlay Drawer for view Product -->
         <v-navigation-drawer
@@ -400,12 +404,14 @@
 
 <script>
 import {mapState, mapActions, mapMutations} from "vuex";
+import _debounce from 'lodash/debounce'
 
 export default {
   name: "Product",
   data() {
     return {
       valid: true,
+      search: '',
       headers: [
         {text: '#', value: 'identifier', sortable: false,},
         {
@@ -421,6 +427,10 @@ export default {
       ],
       validationRules: {
         textRules: [v => !!v || 'Field is required'],
+        documentFileRules: [
+          v => !!v || 'Field is required',
+          v => !v || v.size < 2000000 || 'File size should be less than 2 MB!'
+        ],
       }
     }
   },
@@ -440,6 +450,13 @@ export default {
       'productUpdateForm',
       'edit_image_url'
     ]),
+  },
+  watch: {
+    /** Product Search */
+    search: _debounce(function (newVal) {
+      this.isTyping = false
+      this.getProducts({'event': null, 'search': newVal})
+    }, 600)
   },
   methods: {
     ...mapMutations('product', [
@@ -479,12 +496,6 @@ export default {
       _this.$refs.editProductForm.resetValidation()
       _this.SET_IS_ACTIVE({modal: false, name: null})
     },
-
-
   },
 }
 </script>
-
-<style scoped>
-
-</style>

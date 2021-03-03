@@ -18,6 +18,7 @@ export default new Router({
             component: Login,
             name: 'login',
             meta: {
+                title: 'Login - WE-RYZEN',
                 description: 'Login panel',
                 requiresAuth: false,
 
@@ -29,6 +30,7 @@ export default new Router({
             component: Product,
             name: 'products',
             meta: {
+                title: 'Product - WE-RYZEN',
                 description: 'Products module',
                 requiresAuth: true,
 

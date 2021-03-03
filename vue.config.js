@@ -1,15 +1,8 @@
 module.exports = {
     devServer: {
-        // proxy: {
-        //     '^/api': {
-        //         target: 'http://we_server.test',
-        //         logLevel: 'debug'
-        //     }
-        // }
-
         proxy: {
             '^/api': {
-                target: 'http://we_server.test',
+                target: 'https://api.satyajitmondal.com',
                 changeOrigin: true,
                 secure: false,
                 pathRewrite: {'^/api': '/api/'},

@@ -21,6 +21,13 @@ sync(store, router)
 
 /** Navigation Guard */
 router.beforeEach((to, from, next) => {
+
+    // Find the nearest title element.
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+
+    // If a route with a title was found, set the document (page) title to that value.
+    if(nearestWithTitle) { document.title = nearestWithTitle.meta.title } else { document.title  = 'WE-RYZEN'}
+
     if (to.matched.some(record => record.meta.requiresAuth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
