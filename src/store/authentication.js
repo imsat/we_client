@@ -61,7 +61,10 @@ export default {
     actions: {
         /**
          * Login for User
-         * @param loginInfo
+         *
+         * @param commit
+         * @param state
+         * @returns {Promise<Route>}
          */
         async login({ commit, state }) {
             try {
@@ -81,9 +84,11 @@ export default {
                 console.log(loginError)
             }
         },
+
         /**
          * Logout for User
-         * @param null
+         *
+         * @param commit
          */
         logout({commit}) {
             try {

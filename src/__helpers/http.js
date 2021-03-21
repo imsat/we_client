@@ -10,7 +10,9 @@ export default () => {
         baseURL: store.state.baseUrl,
         // timeout: 50000,
         headers: {
-            Accept: '*/*',
+            // Accept: '*/*',
+            Accept: 'application/json',
+            "Content-Type": 'application/json',
             Authorization: `Bearer ${store.state.authentication.token}`,
             locale: 'en'
         },
@@ -38,7 +40,7 @@ export default () => {
 
             /** Global loader */
             store.commit('__helpers/SET_IS_LOADING', true, {root: true})
-            store.commit('__helpers/SET_COMMON_ERRORS', error.response, {root: true})
+            store.commit('__helpers/SET_COMMON_ERRORS', error.response.data.errors, {root: true})
 
             return Promise.reject(error)
         }

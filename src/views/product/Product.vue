@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
 
         <v-toolbar flat>
-          <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line></v-text-field>
+          <v-text-field v-model.lazy="search" @input="isTyping = true" append-icon="mdi-magnify" label="Search" single-line></v-text-field>
         </v-toolbar>
 
         <v-btn
@@ -26,7 +26,7 @@
         <v-data-table
             :headers="headers"
             :items="products"
-            @pagination="getProducts({event: $event, search: search})"
+            @update:options="getProducts({event: $event, search: search})"
             :server-items-length="totalProducts"
             :loading="isLoading"
             class="elevation-1"
@@ -158,6 +158,7 @@
                           @input="SET_ADD_PRODUCT_TITLE"
                           required
                           :rules="validationRules.textRules"
+                          :error-messages="commonErrors.title ? [commonErrors.title[0]] : ''"
                       ></v-text-field>
 
                       <v-text-field
@@ -167,6 +168,7 @@
                           @input="SET_ADD_PRODUCT_PRICE"
                           required
                           :rules="validationRules.textRules"
+                          :error-messages="commonErrors.price ? [commonErrors.price[0]] : ''"
                       ></v-text-field>
 
                       <v-file-input
@@ -255,6 +257,7 @@
                           @input="SET_EDIT_PRODUCT_TITLE"
                           required
                           :rules="validationRules.textRules"
+                          :error-messages="commonErrors.title ? [commonErrors.title[0]] : ''"
                       ></v-text-field>
 
                       <v-text-field
@@ -264,6 +267,7 @@
                           @input="SET_EDIT_PRODUCT_PRICE"
                           required
                           :rules="validationRules.textRules"
+                          :error-messages="commonErrors.price ? [commonErrors.price[0]] : ''"
                       ></v-text-field>
 
                       <v-file-input
@@ -411,6 +415,7 @@ export default {
   data() {
     return {
       valid: true,
+      isTyping: false,
       search: '',
       headers: [
         {text: '#', value: 'identifier', sortable: false,},

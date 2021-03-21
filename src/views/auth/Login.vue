@@ -39,6 +39,7 @@
                         @input="SET_LOGIN_EMAIL"
                         prepend-icon="mdi-account"
                         type="text"
+                        :error-messages="commonErrors.email ? [commonErrors.email[0]] : ''"
                     ></v-text-field>
 
                     <!--                    :error-messages="errors.password ? [errors.password[0]] : ''"-->
@@ -49,6 +50,7 @@
                         @input="SET_LOGIN_PASSWORD"
                         prepend-icon="mdi-lock"
                         type="password"
+                        :error-messages="commonErrors.password ? [commonErrors.password[0]] : ''"
                     ></v-text-field>
                   </v-form>
                 </v-card-text>

@@ -29,7 +29,7 @@ export default {
         totalProducts: 0,
         pagination: {
             page: 1,
-            itemsPerPage: 0,
+            itemsPerPage: 10,
             pageStart: 0,
             pageStop: 0,
             pageCount: 0,
@@ -37,16 +37,6 @@ export default {
             lastPage: 0
         },
         viewProduct: {},
-    },
-    getters: {
-        validateProductCreate(state) {
-            if (state.productCreateForm.title && state.productCreateForm.price && state.productCreateForm.image_url) return true
-            return false
-        },
-        validateProductUpdate(state) {
-            if (state.productUpdateForm.title && state.productUpdateForm.price && state.productUpdateForm.image_url) return true
-            return false
-        },
     },
     mutations: {
         /** Set Up Product */
@@ -122,7 +112,12 @@ export default {
     actions: {
         /**
          * Get All Products
-         * @param loginInfo
+         *
+         * @param state
+         * @param commit
+         * @param event
+         * @param search
+         * @returns {Promise<AxiosResponse<any>>}
          */
         async getProducts({state, commit}, {event, search}) {
             try {
@@ -140,6 +135,9 @@ export default {
                         }
                     })
                     .then(response => {
+
+
+
                         commit('SET_PRODUCT', response.data.data)
                         commit('SET_TOTAL_PRODUCT', response.data.meta.total)
 
@@ -153,7 +151,10 @@ export default {
         },
         /**
          * Add New Product
-         * @param loginInfo
+         *
+         * @param state
+         * @param commit
+         * @returns {Promise<AxiosResponse<any>>}
          */
         addNewProduct({state, commit}) {
             try {
@@ -179,9 +180,13 @@ export default {
                 console.log(error)
             }
         },
+
         /**
          * Update Product
-         * @param loginInfo
+         *
+         * @param state
+         * @param commit
+         * @returns {Promise<AxiosResponse<any>>}
          */
         updateProduct({state, commit}) {
             try {
@@ -197,7 +202,7 @@ export default {
                         .post('/products/' + state.productUpdateForm.id, formData)
                         .then(response => {
                             if (response.status == 202) {
-                                toast.success('Product updated successful');
+                                toast.success('Product updated successfully');
                                 commit('UPDATE_PRODUCT_AFTER_COMPLETE', response.data.data);
                             }
                         })
@@ -210,7 +215,7 @@ export default {
                         .post('/products/' + state.productUpdateForm.id, state.productUpdateForm)
                         .then(response => {
                             if (response.status == 202) {
-                                toast.success('Product updated successful');
+                                toast.success('Product updated successfully');
                                 commit('UPDATE_PRODUCT_AFTER_COMPLETE', response.data.data);
                             }
                         })
@@ -227,6 +232,9 @@ export default {
         },
         /**
          * Deleting Product
+         *
+         * @param state
+         * @param commit
          * @param id
          */
         removeProduct({state, commit}, id) {
@@ -237,7 +245,7 @@ export default {
                             .delete('/products/' + id)
                             .then(response => {
                                 if (response.status == 200) {
-                                    toast.success('Product deleted successful');
+                                    toast.success('Product deleted successfully');
                                     commit('UPDATE_PRODUCT_AFTER_DELETE', id);
                                 }
                             })

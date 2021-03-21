@@ -53,12 +53,11 @@ router.beforeEach((to, from, next) => {
 
 
 new Vue({
-    vuetify,
     router,
     store,
+    vuetify,
     render: h => h(App)
-}).$mount('#app')
-
+}).$mount('#app');
 
 
 

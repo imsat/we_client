@@ -8,6 +8,11 @@ module.exports = {
                 pathRewrite: {'^/api': '/api/'},
                 logLevel: 'debug'
             },
+        },
+        allowedHosts: ['api.satyajitmondal.com'],
+        overlay: {
+            warnings: true,
+            errors: true
         }
     },
     transpileDependencies: [
